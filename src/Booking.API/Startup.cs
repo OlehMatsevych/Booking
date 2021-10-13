@@ -1,3 +1,4 @@
+using Booking.Common;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -12,6 +13,8 @@ namespace Booking.API
 {
     public class Startup
     {
+        private readonly IConfiguration _configuration;
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -23,6 +26,8 @@ namespace Booking.API
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddRazorPages();
+            services.AddSwagger();
+            services.AddDatabase(_configuration);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -36,8 +41,19 @@ namespace Booking.API
             {
                 app.UseExceptionHandler("/Error");
             }
+            app.UseHttpsRedirection();
 
-            app.UseStaticFiles();
+            app.UseCors(corsPolicyBuilder =>
+                   corsPolicyBuilder.AllowAnyOrigin()
+                                    .AllowAnyMethod()
+                                    .AllowAnyHeader()
+            );
+            app.UseSwagger();
+
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Booking");
+            });
 
             app.UseRouting();
 
@@ -45,7 +61,7 @@ namespace Booking.API
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapRazorPages();
+                endpoints.MapControllers();
             });
         }
     }
