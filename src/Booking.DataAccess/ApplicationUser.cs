@@ -3,6 +3,5 @@
 namespace Booking.DataAccess
 {
     public class ApplicationUser: IdentityUser
-    {
-    }
+    {}
 }

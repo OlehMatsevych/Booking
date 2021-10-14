@@ -1,9 +1,10 @@
 ﻿using Booking.Core.Common;
+using System;
 using System.Collections.Generic;
 
 namespace Booking.Core.Entities
 {
-    public class Admin: BaseEntity
+    public class Admin: BaseEntity, IChangeEntity
     {
         public string Name { get; set; }
         public string Email { get; set; }
@@ -12,5 +13,7 @@ namespace Booking.Core.Entities
         public IEnumerable<Apartment> Apartments { get; set; }
         public IEnumerable<ApartmentRequest> ApartmentRequests { get; set; }
         public IEnumerable<Guest> Guests { get; set; }
+        public DateTime CreatedOn { get; set; }
+        public DateTime UpdatedOn { get; set; }
     }
 }

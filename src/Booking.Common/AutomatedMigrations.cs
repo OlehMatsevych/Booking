@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Booking.Common
 {
-    public class AutomatedMigrations
+    public static class AutomatedMigrations
     {
         public static async Task MigrateAsync(IServiceProvider services)
         {

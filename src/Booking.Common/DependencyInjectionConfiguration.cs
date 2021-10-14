@@ -1,10 +1,14 @@
-﻿using Booking.DataAccess.Persistence;
+﻿using Booking.DataAccess;
+using Booking.DataAccess.Persistence;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System;
 using System.Collections.Generic;
@@ -24,9 +28,32 @@ namespace Booking.Common
         }
         public static void AddDatabase(this IServiceCollection services, IConfiguration configuration)
         {
+            var databaseConfig = configuration.GetSection("Database").Get<DatabaseConfiguration>();
             services.AddDbContext<BookingContext>(options =>
+                options.UseSqlServer(databaseConfig.ConnectionString,
+                opt => opt.MigrationsAssembly(typeof(BookingContext).Assembly.FullName)));
+        }
+
+        public static void AddIdentity(this IServiceCollection services)
+        {
+            services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
+                .AddEntityFrameworkStores<BookingContext>();
+
+            services.Configure<IdentityOptions>(options =>
             {
-                options.UseSqlServer(configuration.GetConnectionString("BookingDb"));
+                options.Password.RequireDigit = true;
+                options.Password.RequireLowercase = true;
+                options.Password.RequireNonAlphanumeric = true;
+                options.Password.RequireUppercase = true;
+                options.Password.RequiredLength = 6;
+                options.Password.RequiredUniqueChars = 1;
+
+                options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
+                options.Lockout.MaxFailedAccessAttempts = 5;
+                options.Lockout.AllowedForNewUsers = true;
+
+                options.User.AllowedUserNameCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+";
+                options.User.RequireUniqueEmail = true;
             });
         }
         public static void AddSwagger(this IServiceCollection services)
@@ -58,5 +85,31 @@ namespace Booking.Common
                 });
             });
         }
+        public static void AddJwt(this IServiceCollection services, IConfiguration configuration)
+        {
+            var secretKey = configuration.GetValue<string>("JwtConfiguration:SecretKey");
+
+            var key = Encoding.ASCII.GetBytes(secretKey);
+
+            services.AddAuthentication(x =>
+            {
+                x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+            .AddJwtBearer(x =>
+            {
+                x.RequireHttpsMetadata = false;
+                x.SaveToken = true;
+                x.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(key),
+                    ValidateIssuer = false,
+                    ValidateAudience = false
+                };
+            });
+        }
+
+
     }
 }

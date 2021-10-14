@@ -1,11 +1,10 @@
 ﻿using Booking.Core.Common;
 using Booking.Core.Entities;
+using Booking.Core.Structs;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
-using System.Collections.Generic;
 using System.Reflection;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -25,6 +24,7 @@ namespace Booking.DataAccess.Persistence
         public DbSet<Reservation> Reservations { get; set; }
         public DbSet<Room> Rooms { get; set; }
         public DbSet<RoomDetails> RoomsDetails { get; set; }
+        public DbSet<Location> Locations { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -32,7 +32,7 @@ namespace Booking.DataAccess.Persistence
             base.OnModelCreating(builder);
         }
 
-        public async Task<int> SaveChangesAsync(CancellationToken token = new CancellationToken()) 
+        public async new Task<int> SaveChangesAsync(CancellationToken token = new CancellationToken()) 
         {
             foreach (var entry in ChangeTracker.Entries<IChangeEntity>())
             {
