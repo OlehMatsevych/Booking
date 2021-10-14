@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -15,10 +16,12 @@ namespace Booking.Common
         public static async Task MigrateAsync(IServiceProvider services)
         {
             var context = services.GetRequiredService<BookingContext>();
-            if (context.Database.IsSqlServer())
+            var pendingMigrations = await context.Database.GetPendingMigrationsAsync();
+            if (pendingMigrations.Any())
             {
                 await context.Database.MigrateAsync();
             }
+
             var userManager = services.GetRequiredService<UserManager<ApplicationUser>>();
             await BookingContextSeed.SeedDatabaseAsync(context,userManager);
         }
