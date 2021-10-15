@@ -1,5 +1,7 @@
-﻿using Booking.DataAccess;
+﻿using Booking.Core.Common;
+using Booking.DataAccess;
 using Booking.DataAccess.Persistence;
+using Booking.DataAccess.Repositories;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -24,7 +26,7 @@ namespace Booking.Common
         }
         public static void AddRepositories(this IServiceCollection services)
         {
-
+            services.AddScoped<IRepository<BaseEntity>, Repository<BaseEntity>>();
         }
         public static void AddDatabase(this IServiceCollection services, IConfiguration configuration)
         {
@@ -46,13 +48,11 @@ namespace Booking.Common
                 options.Password.RequireNonAlphanumeric = true;
                 options.Password.RequireUppercase = true;
                 options.Password.RequiredLength = 6;
-                options.Password.RequiredUniqueChars = 1;
 
-                options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
                 options.Lockout.MaxFailedAccessAttempts = 5;
                 options.Lockout.AllowedForNewUsers = true;
 
-                options.User.AllowedUserNameCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+";
+                options.User.AllowedUserNameCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
                 options.User.RequireUniqueEmail = true;
             });
         }
