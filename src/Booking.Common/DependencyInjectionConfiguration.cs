@@ -1,32 +1,30 @@
-﻿using Booking.Core.Common;
+﻿using Booking.Application.MappingProfiles;
+using Booking.Application.Services.Apartment;
+using Booking.Core.Common;
 using Booking.DataAccess;
 using Booking.DataAccess.Persistence;
 using Booking.DataAccess.Repositories;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System;
-using System.Collections.Generic;
 using System.Text;
 
 namespace Booking.Common
 {
     public static class DependencyInjectionConfiguration
     {
-        public static void AddServices(this IServiceCollection services, IWebHostEnvironment env)
+        public static void AddServices(this IServiceCollection services)
         {
-            //add services here
+            services.AddScoped<IApartmentService, ApartmentService>();
         }
         public static void AddRepositories(this IServiceCollection services)
         {
-            services.AddScoped<IRepository<BaseEntity>, Repository<BaseEntity>>();
+            services.AddScoped<IApartmentRepository, ApartmentRepository>();
         }
         public static void AddDatabase(this IServiceCollection services, IConfiguration configuration)
         {
@@ -34,6 +32,10 @@ namespace Booking.Common
             services.AddDbContext<BookingContext>(options =>
                 options.UseSqlServer(databaseConfig.ConnectionString,
                 opt => opt.MigrationsAssembly(typeof(BookingContext).Assembly.FullName)));
+        }
+        public static void AddAutoMapper(this IServiceCollection services)
+        {
+            services.AddAutoMapper(typeof(ApartmentProfile).Assembly);
         }
 
         public static void AddIdentity(this IServiceCollection services)
@@ -45,11 +47,11 @@ namespace Booking.Common
             {
                 options.Password.RequireDigit = true;
                 options.Password.RequireLowercase = true;
-                options.Password.RequireNonAlphanumeric = true;
+                options.Password.RequireNonAlphanumeric = false;
                 options.Password.RequireUppercase = true;
                 options.Password.RequiredLength = 6;
 
-                options.Lockout.MaxFailedAccessAttempts = 5;
+                options.Lockout.MaxFailedAccessAttempts = 10;
                 options.Lockout.AllowedForNewUsers = true;
 
                 options.User.AllowedUserNameCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";

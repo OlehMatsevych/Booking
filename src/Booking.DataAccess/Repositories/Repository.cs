@@ -40,8 +40,14 @@ namespace Booking.DataAccess.Repositories
         
         public async Task<TEntity> GetByIdAsync(int id)=>
             await Context.Set<TEntity>().FindAsync(id);
-
-        public IQueryable<TEntity> GetWhereAsync(Expression<Func<TEntity, bool>> predicate)=>
+        
+        public IQueryable<TEntity> GetWhere(Expression<Func<TEntity, bool>> predicate)=>
              Context.Set<TEntity>().Where(predicate).AsQueryable();
+
+        public IQueryable<TEntity> GetAll(params Expression<Func<TEntity, object>>[] includes)
+        {
+            var query = Context.Set<TEntity>().AsQueryable();
+            return includes.Aggregate(query, (q, w) => q.Include(w));
+        }
     }
 }

@@ -14,6 +14,8 @@ namespace Booking.DataAccess.Repositories
         Task DeleteAsync(TEntity entity);
         Task UpdateAsync(TEntity entity);
         Task<IEnumerable<TEntity>> GetAllAsync();
-        IQueryable<TEntity> GetWhereAsync(Expression<Func<TEntity,bool>> predicate);
+        IQueryable<TEntity> GetWhere(Expression<Func<TEntity,bool>> predicate);
+        IQueryable<TEntity> GetAll(params Expression<Func<TEntity,object>>[] includes);
+
     }
 }

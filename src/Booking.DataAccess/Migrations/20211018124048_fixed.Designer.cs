@@ -4,14 +4,16 @@ using Booking.DataAccess.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Booking.DataAccess.Migrations
 {
     [DbContext(typeof(BookingContext))]
-    partial class BookingContextModelSnapshot : ModelSnapshot
+    [Migration("20211018124048_fixed")]
+    partial class @fixed
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -57,7 +59,7 @@ namespace Booking.DataAccess.Migrations
                     b.Property<Guid?>("GuestId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("LocationId")
+                    b.Property<Guid?>("LocationId")
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
@@ -514,9 +516,7 @@ namespace Booking.DataAccess.Migrations
 
                     b.HasOne("Booking.Core.Entities.Location", "Location")
                         .WithMany()
-                        .HasForeignKey("LocationId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("LocationId");
                 });
 
             modelBuilder.Entity("Booking.Core.Entities.ApartmentProvider", b =>

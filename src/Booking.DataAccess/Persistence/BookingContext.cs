@@ -1,6 +1,5 @@
 ﻿using Booking.Core.Common;
 using Booking.Core.Entities;
-using Booking.Core.Structs;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;

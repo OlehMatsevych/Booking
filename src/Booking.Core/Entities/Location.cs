@@ -1,7 +1,7 @@
 ﻿
 using Booking.Core.Common;
 
-namespace Booking.Core.Structs
+namespace Booking.Core.Entities
 {
     public class Location: BaseEntity
     {

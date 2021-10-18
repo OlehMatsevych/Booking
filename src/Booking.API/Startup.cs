@@ -1,13 +1,9 @@
+using Booking.API.Middleware;
 using Booking.Common;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Booking.API
 {
@@ -29,6 +25,10 @@ namespace Booking.API
             services.AddSwagger();
             services.AddDatabase(_configuration);
             services.AddIdentity();
+            services.AddServices();
+            services.AddRepositories();
+            services.AddAutoMapper();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -54,9 +54,11 @@ namespace Booking.API
 
             app.UseAuthorization();
 
+            app.UseMiddleware<ExceptionHandler>();
+
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapControllers();
+                endpoints.MapControllerRoute("default","{controller=Apartment}/{action=index}");
             });
         }
     }
