@@ -1,6 +1,7 @@
 ﻿using Booking.Application.MappingProfiles;
+using Booking.Application.Services;
 using Booking.Application.Services.Apartment;
-using Booking.Core.Common;
+using Booking.Application.Services.Interfaces;
 using Booking.DataAccess;
 using Booking.DataAccess.Persistence;
 using Booking.DataAccess.Repositories;
@@ -21,6 +22,7 @@ namespace Booking.Common
         public static void AddServices(this IServiceCollection services)
         {
             services.AddScoped<IApartmentService, ApartmentService>();
+            services.AddScoped<IAccountService, AccountService>();
         }
         public static void AddRepositories(this IServiceCollection services)
         {
@@ -51,11 +53,14 @@ namespace Booking.Common
                 options.Password.RequireUppercase = true;
                 options.Password.RequiredLength = 6;
 
-                options.Lockout.MaxFailedAccessAttempts = 10;
+                options.Lockout.MaxFailedAccessAttempts = 20;
                 options.Lockout.AllowedForNewUsers = true;
 
                 options.User.AllowedUserNameCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-                options.User.RequireUniqueEmail = true;
+                options.User.RequireUniqueEmail = false;
+                options.SignIn.RequireConfirmedEmail = false;
+                options.SignIn.RequireConfirmedPhoneNumber = false;
+                options.SignIn.RequireConfirmedAccount = false;
             });
         }
         public static void AddSwagger(this IServiceCollection services)
@@ -87,9 +92,9 @@ namespace Booking.Common
                 });
             });
         }
-        public static void AddJwt(this IServiceCollection services, IConfiguration configuration)
+        public static void AddJwt(this IServiceCollection services)
         {
-            var secretKey = configuration.GetValue<string>("JwtConfiguration:SecretKey");
+            string secretKey = "JwtConfiguration:SecretKey";
 
             var key = Encoding.ASCII.GetBytes(secretKey);
 

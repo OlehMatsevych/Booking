@@ -28,6 +28,7 @@ namespace Booking.API
             services.AddServices();
             services.AddRepositories();
             services.AddAutoMapper();
+            services.AddJwt();
 
         }
 

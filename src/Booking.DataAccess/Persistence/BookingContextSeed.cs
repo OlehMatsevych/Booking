@@ -9,11 +9,26 @@ namespace Booking.DataAccess.Persistence
     {
         public static async Task SeedDatabaseAsync(BookingContext context, UserManager<ApplicationUser> userManager)
         {
-            if (!userManager.Users.Any())
+            if (!context.Roles.Any())
             {
-                var user = new ApplicationUser { UserName = "Admin", Email = "Admin@gmail.com" };
-                await userManager.CreateAsync(user, "Admin123");
+                context.Roles.Add(new IdentityRole()
+                { Id = Guid.NewGuid().ToString(), Name = "User", NormalizedName = "USER" });
+                context.Roles.Add(new IdentityRole()
+                { Id = Guid.NewGuid().ToString(), Name = "Admin", NormalizedName = "ADMIN" });
+                context.Roles.Add(new IdentityRole()
+                { Id = Guid.NewGuid().ToString(), Name = "ApartmentProvider", NormalizedName = "ApartmentProvider" });
             }
+            if (userManager.Users.Count() < 3)
+            {
+                var admin = new ApplicationUser { UserName = "Admin", Email = "Admin@gmail.com" };
+                var user = new ApplicationUser { UserName = "User", Email = "User@gmail.com" };
+                var apartmentProvider = new ApplicationUser { UserName = "ApartmentProvider", Email = "ApartmentProvider@gmail.com" };
+
+                await userManager.CreateAsync(admin, "Admin123");
+                await userManager.CreateAsync(user, "User123");
+                await userManager.CreateAsync(apartmentProvider, "ApartmentProvider123");
+            }
+
             if (!context.Apartments.Any())
             {
                 context.Apartments.Add(new Core.Entities.Apartment() { Id = Guid.NewGuid() });

@@ -1,5 +1,7 @@
-﻿using Booking.Application.Services.Apartment;
+﻿using Booking.Application.Models.Apartment;
+using Booking.Application.Services.Apartment;
 using Booking.Core.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -10,6 +12,7 @@ namespace Booking.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class ApartmentController : ControllerBase
     {
         //Service
@@ -27,27 +30,31 @@ namespace Booking.API.Controllers
             return Ok(apartments);
         }
 
-        [HttpGet("{Location}")]
-        public async Task<IActionResult> GetApartmentsByLocation(Location location)
+        [HttpPost("{Location}")]
+        public IActionResult GetApartmentsByLocation(Location location)
         {
-            return Ok();
+            var apartments = _apartmentService.GetApartmentsByLocationAsync(location);
+            return Ok(apartments);
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddAppartment(string TOADD)
+        public async Task<IActionResult> AddAppartment(ApartmentModel model)
         {
-            return Ok();
+            var apartment = await _apartmentService.CreateApartmentsAsync(model);
+            return Ok(apartment);
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateAppartment(string id, string TOUPDATE)
+        public async Task<IActionResult> UpdateAppartment(Guid id, ApartmentModel model)
         {
-            return Ok();
+            var updatedApartment = await _apartmentService.UpdateApartmentsAsync(id,model);
+            return Ok(updatedApartment);
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteAppartmentById(string id)
+        public IActionResult DeleteAppartmentById(Guid id)
         {
+            _apartmentService.DeleteApartmentsAsync(id);
             return Ok();
         }
     }

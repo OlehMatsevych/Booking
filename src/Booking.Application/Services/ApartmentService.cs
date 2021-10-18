@@ -7,6 +7,7 @@ using System.Linq;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
+using Booking.Application.Constants;
 
 namespace Booking.Application.Services.Apartment
 {
@@ -20,30 +21,40 @@ namespace Booking.Application.Services.Apartment
             _repository = repository;
             _mapper = mapper;
         }
-        public Task<Models.Apartment.ApartmentModel> CreateApartmentsAsync(Models.Apartment.ApartmentModel apartment)
+        public async Task<Models.Apartment.ApartmentModel> CreateApartmentsAsync(Models.Apartment.ApartmentModel apartment)
         {
-            throw new NotImplementedException();
+            var entity = _mapper.Map<Booking.Core.Entities.Apartment>(apartment);
+            await _repository.AddAsync(entity);
+            return apartment;
         }
 
-        public Task DeleteApartmentsAsync(string id)
+        public async Task DeleteApartmentsAsync(Guid id)
         {
-            throw new NotImplementedException();
+            var entity = _repository.GetWhere(x => x.Id == id).FirstOrDefault();
+            await _repository.DeleteAsync(entity);
         }
 
         public IEnumerable<Models.Apartment.ApartmentModel> GetApartments()
         {
-            var apartments = _repository.GetAll(q=>q.Location).AsParallel().ToList();
+            var apartments = _repository.GetAll(q => q.Location).AsParallel().ToList();
+            if (apartments == null)
+                throw new ArgumentException(ApartmentErrorMessages.EmptyList);
             return _mapper.Map<IEnumerable<Models.Apartment.ApartmentModel>>(apartments);
         }
 
-        public Task<IEnumerable<Models.Apartment.ApartmentModel>> GetApartmentsByLocationAsync(Location location)
+        public IEnumerable<Models.Apartment.ApartmentModel> GetApartmentsByLocationAsync(Location location)
         {
-            throw new NotImplementedException();
+            var apartments = _repository.GetAll(q => q.Location).Where(a => a.Location.Equals(location)).AsParallel().ToList();
+            if (apartments == null)
+                throw new ArgumentException(ApartmentErrorMessages.EmptyList);
+            return _mapper.Map<IEnumerable<Models.Apartment.ApartmentModel>>(apartments);
         }
 
-        public Task<Models.Apartment.ApartmentModel> UpdateApartmentsAsync(string id, Models.Apartment.ApartmentModel apartment)
+        public async Task<Models.Apartment.ApartmentModel> UpdateApartmentsAsync(Guid id, Models.Apartment.ApartmentModel apartment)
         {
-            throw new NotImplementedException();
+            var entity = _repository.GetWhere(x => x.Id == id).FirstOrDefault();
+            entity.Location = apartment.Location;
+            return _mapper.Map<Models.Apartment.ApartmentModel>(entity);
         }
     }
 }
