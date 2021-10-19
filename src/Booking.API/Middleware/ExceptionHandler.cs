@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Booking.Application.Exceptions;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -44,6 +45,9 @@ namespace Booking.API.Middleware
                     break;
                 case InvalidOperationException _:
                     response.StatusCode = (int)HttpStatusCode.MethodNotAllowed;
+                    break;
+                case UserNotFoundException _:
+                    response.StatusCode = (int)HttpStatusCode.NotFound;
                     break;
             }
             var result = JsonSerializer.Serialize(new { message = error.Message });

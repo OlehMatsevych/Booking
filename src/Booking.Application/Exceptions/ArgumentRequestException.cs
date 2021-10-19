@@ -2,9 +2,9 @@
 
 namespace Booking.Application.Exceptions
 {
-    public class ArgumentRequestException: Exception
+    public class ArgumentRequestException : Exception
     {
-        public ArgumentRequestException(string message):base(message)
-        {}
+        public ArgumentRequestException(string message) : base(message)
+        { }
     }
 }

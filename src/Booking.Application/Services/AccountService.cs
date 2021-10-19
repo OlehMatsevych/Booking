@@ -58,7 +58,7 @@ namespace Booking.Application.Services
             }
         }
 
-        public async Task CreateAsync(UserModel createUserModel)
+        public async Task<string> CreateAsync(UserModel createUserModel)
         {
             try
             {
@@ -71,7 +71,12 @@ namespace Booking.Application.Services
                 await _userManager.AddToRoleAsync(newUser,"User");
                 await _context.AddAsync(newUser);
                 await _context.SaveChangesAsync();
-
+                var response = new
+                {
+                    Success = true,
+                    UserName = user.UserName
+                };
+                return JsonSerializer.Serialize(response);
             }
             catch (Exception ex)
             {

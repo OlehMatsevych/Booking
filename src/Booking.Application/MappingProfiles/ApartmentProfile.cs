@@ -7,8 +7,8 @@ namespace Booking.Application.MappingProfiles
     {
         public ApartmentProfile()
         {
-            CreateMap<Booking.Core.Entities.Apartment, ApartmentModel>();
-            CreateMap<ApartmentModel, Booking.Core.Entities.Apartment>();
+            CreateMap<Core.Entities.Apartment, ApartmentModel>();
+            CreateMap<ApartmentModel, Core.Entities.Apartment>();
         }
     }
 }

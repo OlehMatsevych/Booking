@@ -6,7 +6,7 @@ namespace Booking.Application.Constants
 {
     public static class AccountErrorMessages
     {
-        public static string ArgumentRequestException = "Creating user went wrong";
-        public static string UserNotFoundException = "User Not Found, try again";
+        public const string ArgumentRequestException = "Creating user went wrong";
+        public const string UserNotFoundException = "User Not Found, try again";
     }
 }

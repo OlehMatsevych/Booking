@@ -6,6 +6,6 @@ namespace Booking.Application.Constants
 {
     public static class ApartmentErrorMessages
     {
-        public static string EmptyList = "Data base returned empty apartment list";
+        public const string EmptyList = "Data base returned empty apartment list";
     }
 }
