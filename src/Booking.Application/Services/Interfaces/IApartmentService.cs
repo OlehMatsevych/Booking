@@ -11,6 +11,6 @@ namespace Booking.Application.Services.Apartment
         IEnumerable<Models.Apartment.ApartmentModel> GetApartmentsByLocationAsync(Location location);
         Task<Models.Apartment.ApartmentModel> CreateApartmentsAsync(Models.Apartment.ApartmentModel apartment);
         Task<Models.Apartment.ApartmentModel> UpdateApartmentsAsync(Guid id, Models.Apartment.ApartmentModel apartment);
-        Task DeleteApartmentsAsync(Guid id);
+        Task<string> DeleteApartmentsAsync(Guid id);
     }
 }

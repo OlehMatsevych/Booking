@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Booking.API.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/appartments")]
     [ApiController]
     [Authorize]
     public class ApartmentController : ControllerBase
@@ -24,6 +24,7 @@ namespace Booking.API.Controllers
         }
 
         [HttpGet]
+        [Route("appartmentsList")]
         public IActionResult GetApartments()
         {
             var apartments =  _apartmentService.GetApartments();

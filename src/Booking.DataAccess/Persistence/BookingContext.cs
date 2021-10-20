@@ -11,8 +11,6 @@ namespace Booking.DataAccess.Persistence
 {
     public class BookingContext: IdentityDbContext<ApplicationUser>
     {
-        public BookingContext()
-        {}
         public BookingContext(DbContextOptions<BookingContext> options): base(options)
         {}
         public DbSet<Admin> Admins { get; set; }
@@ -50,5 +48,6 @@ namespace Booking.DataAccess.Persistence
 
             return await base.SaveChangesAsync(token);
         }
+        //TODO: ADD Dispose
     }
 }

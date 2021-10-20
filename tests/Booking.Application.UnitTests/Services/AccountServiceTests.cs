@@ -61,7 +61,7 @@ namespace Booking.Application.UnitTests.Services
             //Arrange
             var createUserModel = new UserModel() { 
                 UserName="John",
-                Email="test@test.f",
+                Email="test@test.com",
                 PhoneNumber="+224346345232",
                 Password="TryCreate132"
             };
@@ -86,7 +86,7 @@ namespace Booking.Application.UnitTests.Services
             var loginUserModel = new UserModel()
             {
                 UserName = "John",
-                Email = "test@test.f",
+                Email = "test@test.com",
                 PhoneNumber = "+224346345232",
                 Password = "TryCreate132"
             };

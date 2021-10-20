@@ -76,7 +76,7 @@ namespace Booking.Common
                     Scheme = "Bearer"
                 });
 
-                s.AddSecurityRequirement(new OpenApiSecurityRequirement
+                s.AddSecurityRequirement(new OpenApiSecurityRequirement()
                 {
                     {
                         new OpenApiSecurityScheme
@@ -85,7 +85,10 @@ namespace Booking.Common
                             {
                                 Type = ReferenceType.SecurityScheme,
                                 Id = "Bearer"
-                            }
+                            },
+                            Scheme = "oath2",
+                            Name = "Bearer",
+                            In = ParameterLocation.Header
                         },
                         Array.Empty<string>()
                     }

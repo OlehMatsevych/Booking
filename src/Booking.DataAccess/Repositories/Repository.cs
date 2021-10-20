@@ -40,7 +40,7 @@ namespace Booking.DataAccess.Repositories
         
         public async Task<TEntity> GetByIdAsync(int id)=>
             await Context.Set<TEntity>().FindAsync(id);
-        
+        //TODO: params
         public IQueryable<TEntity> GetWhere(Expression<Func<TEntity, bool>> predicate)=>
              Context.Set<TEntity>().Where(predicate).AsQueryable();
 

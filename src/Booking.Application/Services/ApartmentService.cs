@@ -1,13 +1,12 @@
 ﻿using AutoMapper;
-using Booking.Application.Models.Apartment;
+using Booking.Application.Constants;
 using Booking.Core.Entities;
 using Booking.DataAccess.Repositories;
 using System;
-using System.Linq;
 using System.Collections.Generic;
-using System.Text;
+using System.Linq;
+using System.Text.Json;
 using System.Threading.Tasks;
-using Booking.Application.Constants;
 
 namespace Booking.Application.Services.Apartment
 {
@@ -24,14 +23,28 @@ namespace Booking.Application.Services.Apartment
         public async Task<Models.Apartment.ApartmentModel> CreateApartmentsAsync(Models.Apartment.ApartmentModel apartment)
         {
             var entity = _mapper.Map<Booking.Core.Entities.Apartment>(apartment);
+            if (entity == null)
+            {
+                throw new Exception();
+            }
             await _repository.AddAsync(entity);
             return apartment;
         }
 
-        public async Task DeleteApartmentsAsync(Guid id)
+        public async Task<string> DeleteApartmentsAsync(Guid id)
         {
             var entity = _repository.GetWhere(x => x.Id == id).FirstOrDefault();
+            if (entity == null)
+                throw new Exception("Not Found");
             await _repository.DeleteAsync(entity);
+            var response = new
+            {
+                Success = true,
+            };
+            //TODO: Usings
+            //TODO: brackets FOR THE IF
+            //TODO: Integration Tests
+            return JsonSerializer.Serialize(response);
         }
 
         public IEnumerable<Models.Apartment.ApartmentModel> GetApartments()
