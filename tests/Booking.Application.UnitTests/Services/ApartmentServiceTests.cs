@@ -136,13 +136,13 @@ namespace Booking.Application.UnitTests.Services
                 City = "Moscow"
             };
 
-            var query = apartments.Where(x => x.Location.Equals(location)).AsQueryable();
-            _repository.GetAll(Arg.Any<Expression<Func<Apartment, object>>[]>()).Returns(query);
+            var query = apartments.Where(x => x.Location.Id == location.Id).AsQueryable();
+            _repository.GetWhere(Arg.Any<Expression<Func<Apartment, bool>>>()).Returns(query);
 
             //Act
             var result = _service.GetApartmentsByLocationAsync(location);
             //Assert
-            Assert.Equal(testId, result.First().Id);
+            Assert.Equal(testId, result.First().Location.Id);
 
         }
         [Fact]

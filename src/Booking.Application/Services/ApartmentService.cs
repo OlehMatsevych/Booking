@@ -57,7 +57,8 @@ namespace Booking.Application.Services.Apartment
 
         public IEnumerable<Models.Apartment.ApartmentModel> GetApartmentsByLocationAsync(Location location)
         {
-            var apartments = _repository.GetAll(q => q.Location).Where(a => a.Location.Equals(location)).AsParallel().ToList();
+            //var apartments = _repository.GetAll(q => q.Location).Where(a => a.Location.Equals(location)).AsParallel().ToList();
+            var apartments = _repository.GetWhere(x=>x.Location.Id == location.Id);
             if (apartments == null)
                 throw new ArgumentException(ApartmentErrorMessages.EmptyList);
             return _mapper.Map<IEnumerable<Models.Apartment.ApartmentModel>>(apartments);
