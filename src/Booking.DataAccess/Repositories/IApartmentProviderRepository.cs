@@ -2,6 +2,6 @@
 
 namespace Booking.DataAccess.Repositories
 {
-    public interface IApartmentRepository: IRepository<Apartment>
+    public interface IApartmentProviderRepository : IRepository<ApartmentProvider>
     {}
 }

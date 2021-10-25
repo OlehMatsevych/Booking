@@ -58,7 +58,6 @@ namespace Booking.Application.Services.Apartment
 
         public IEnumerable<ApartmentModel> GetApartmentsByLocationAsync(Location location)
         {
-            //var apartments = _repository.GetAll(q => q.Location).Where(a => a.Location.Equals(location)).AsParallel().ToList();
             var apartments = _repository.GetWhere(x=>x.Location.Id == location.Id);
             if (apartments == null)
             {
@@ -67,7 +66,7 @@ namespace Booking.Application.Services.Apartment
             return _mapper.Map<IEnumerable<ApartmentModel>>(apartments);
         }
 
-        public async Task<Models.Apartment.ApartmentModel> UpdateApartmentsAsync(Guid id, Models.Apartment.ApartmentModel apartment)
+        public async Task<ApartmentModel> UpdateApartmentsAsync(Guid id, ApartmentModel apartment)
         {
             var entity = _repository.GetWhere(x => x.Id == id).FirstOrDefault();
             entity.Location = apartment.Location;

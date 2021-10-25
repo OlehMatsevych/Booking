@@ -1,12 +1,9 @@
-﻿using Booking.Application.Helpers;
-using Booking.Application.Models.Apartment;
+﻿using Booking.Application.Models.Apartment;
 using Booking.Application.Services.Apartment;
 using Booking.Core.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace Booking.API.Controllers
@@ -23,7 +20,7 @@ namespace Booking.API.Controllers
         {
             _apartmentService = apartmentService;
         }
-
+        //TODO: smoke test with Postman
         [HttpGet]
         [Route("ApartmentsList")]
         public IActionResult GetApartments()

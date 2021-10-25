@@ -6,6 +6,7 @@ namespace Booking.Core.Entities
 {
     public class ApartmentProvider: BaseEntity, IChangeEntity
     {
+        public string Name { get; set; }
         public Apartment Apartment { get; set; }
         public IEnumerable<ApartmentRequest> ApartmentRequests { get; set; }
         public IEnumerable<Guest> Guests { get; set; }

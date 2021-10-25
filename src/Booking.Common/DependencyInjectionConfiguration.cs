@@ -23,10 +23,18 @@ namespace Booking.Common
         {
             services.AddScoped<IApartmentService, ApartmentService>();
             services.AddScoped<IAccountService, AccountService>();
+            services.AddScoped<IApartmentProviderService, ApartmentProviderService>();
+            services.AddScoped<IAdminService, AdminService>();
+            services.AddScoped<IUserService, UserService>();
         }
         public static void AddRepositories(this IServiceCollection services)
         {
             services.AddScoped<IApartmentRepository, ApartmentRepository>();
+            services.AddScoped<IApartmentProviderRepository, ApartmentProviderRepository>();
+            services.AddScoped<IApartmentRequestRepository, ApartmentRequestRepository>();
+            services.AddScoped<IAdminRepository, AdminRepository>();
+            services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IReservationRepository, ReservationRepository>();
         }
         public static void AddDatabase(this IServiceCollection services, IConfiguration configuration)
         {

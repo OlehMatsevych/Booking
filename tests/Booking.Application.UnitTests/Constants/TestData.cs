@@ -3,7 +3,6 @@
     public static class TestData
     {
         //TODO: add 3 services
-        //TODO: add enum
         public const string Country_Russia = "Russia";
         public const string Country_USA = "USA";
         public const string City_Moscow = "Moscow";
