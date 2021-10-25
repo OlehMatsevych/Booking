@@ -9,10 +9,13 @@ using System.Threading.Tasks;
 
 namespace Booking.DataAccess.Persistence
 {
-    public class BookingContext: IdentityDbContext<ApplicationUser>
+    public class BookingContext: IdentityDbContext<ApplicationUser>, IDisposable
     {
-        public BookingContext(DbContextOptions<BookingContext> options): base(options)
+        public BookingContext()
         {}
+        public BookingContext(DbContextOptions<BookingContext> options): base(options)
+        { }
+        private bool isDisposed = false;
         public DbSet<Admin> Admins { get; set; }
         public DbSet<Apartment> Apartments { get; set; }
         public DbSet<ApartmentProvider> ApartmentProviders { get; set; }
@@ -48,6 +51,15 @@ namespace Booking.DataAccess.Persistence
 
             return await base.SaveChangesAsync(token);
         }
-        //TODO: ADD Dispose
+
+
+        public override void Dispose()
+        {
+            if (!isDisposed)
+            {
+                base.Dispose();
+            }
+        }
+
     }
 }

@@ -4,6 +4,7 @@ using Booking.Application.Exceptions;
 using Booking.Application.Helpers;
 using Booking.Application.Models;
 using Booking.Application.Services.Interfaces;
+using Booking.Core.Entities;
 using Booking.DataAccess;
 using Booking.DataAccess.Persistence;
 using Microsoft.AspNetCore.Identity;
@@ -34,16 +35,22 @@ namespace Booking.Application.Services
             _signInManager = signInManager;
             _configuration = configuration;
         }
+        //TODO: private method for bl
+        //TODO: extension method object
         public async Task<string> LoginAsync(UserModel loginUserModel)
         {
             try
             {
                 var user = _userManager.Users.FirstOrDefault(u => u.UserName == loginUserModel.UserName);
                 if (user == null)
+                {
                     throw new UserNotFoundException(AccountErrorMessages.UserNotFoundException);
+                }
                 var signInResult = await _signInManager.PasswordSignInAsync(user,loginUserModel.Password, false, false);
                 if (!signInResult.Succeeded)
+                {
                     throw new UserNotFoundException(AccountErrorMessages.UserNotFoundException);
+                }
                 var token = JwtGenerator.GenerateToken(user, _configuration);
                 var response = new
                 {
@@ -65,11 +72,15 @@ namespace Booking.Application.Services
                 var user = _mapper.Map<ApplicationUser>(createUserModel);
                 var result = await _userManager.CreateAsync(user, createUserModel.Password);
                 if (!result.Succeeded)
+                {
                     throw new ArgumentRequestException(
-                        AccountErrorMessages.ArgumentRequestException+':'+ result.Errors.FirstOrDefault().Description);
+                        AccountErrorMessages.ArgumentRequestException + ':' + result.Errors.FirstOrDefault().Description);
+                }
                 var newUser = await _userManager.FindByEmailAsync(user.Email);
                 await _userManager.AddToRoleAsync(newUser,"User");
-                await _context.AddAsync(newUser);
+
+                var guest = _mapper.Map<Guest>(createUserModel);
+                await _context.AddAsync(guest);
                 await _context.SaveChangesAsync();
                 var response = new
                 {

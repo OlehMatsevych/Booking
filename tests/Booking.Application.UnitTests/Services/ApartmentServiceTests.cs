@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
+using Booking.Application.Helpers;
 using Booking.Application.MappingProfiles;
 using Booking.Application.Models.Apartment;
 using Booking.Application.Services.Apartment;
+using Booking.Application.UnitTests.Constants;
 using Booking.Core.Entities;
 using Booking.DataAccess.Repositories;
 using NSubstitute;
@@ -36,10 +38,10 @@ namespace Booking.Application.UnitTests.Services
             var apartmentModel = new ApartmentModel()
             {
                 Id = Guid.NewGuid(),
-                Location = new Core.Entities.Location() { 
+                Location = new Core.Entities.Location() {
                     Id = Guid.NewGuid(),
-                    Country = "USA",
-                    City = "New-York"
+                    Country = TestData.Country_USA,
+                    City = TestData.City_New_York
                 }
             };
             
@@ -67,13 +69,9 @@ namespace Booking.Application.UnitTests.Services
 
             //Act
             var result = await _service.DeleteApartmentsAsync(testId);
-            
+
             //Assert
-            var expectedResult = JsonSerializer.Serialize(
-                new
-                {
-                    Success = true
-                });
+            var expectedResult = new OperationStatus() { IsSuccesed = true, Message = "OK 200" };
             Assert.Equal(expectedResult, result);
         }
         [Fact]
@@ -107,24 +105,24 @@ namespace Booking.Application.UnitTests.Services
                     Id = Guid.NewGuid() ,
                     Location = new Location(){
                         Id = testId,
-                        Country = "Russian",
-                        City = "Moscow"
+                        Country = TestData.Country_Russia,
+                        City = TestData.City_Moscow
                     }
                 },
                 new Apartment() { 
                     Id = Guid.NewGuid() ,
                     Location = new Location(){
                         Id = Guid.NewGuid(),
-                        Country = "Russian",
-                        City = "Saint-Peterburg"
+                        Country = TestData.Country_Russia,
+                        City = TestData.City_Peterburg
                     }
                 },
                 new Apartment() {
                     Id = Guid.NewGuid(),
                     Location = new Location(){
                         Id = Guid.NewGuid(),
-                        Country = "Russian",
-                        City = "Kazan"
+                        Country = TestData.Country_Russia,
+                        City = TestData.City_Kazan
                     }
                 }
             };
@@ -132,8 +130,8 @@ namespace Booking.Application.UnitTests.Services
             Location location = new Location()
             {
                 Id = testId,
-                Country = "Russian",
-                City = "Moscow"
+                Country = TestData.Country_Russia,
+                City = TestData.City_Moscow
             };
 
             var query = apartments.Where(x => x.Location.Id == location.Id).AsQueryable();
@@ -148,7 +146,6 @@ namespace Booking.Application.UnitTests.Services
         [Fact]
         public async Task UpdateApartmentsAsync_ReturnUpdatedApartment()
         {
-            //TODO: Create Constants
             //Arrange
             Guid testId = Guid.NewGuid();
             List<Apartment> apartments = new List<Apartment>
@@ -157,24 +154,24 @@ namespace Booking.Application.UnitTests.Services
                     Id = testId ,
                     Location = new Location(){
                         Id = Guid.NewGuid(),
-                        Country = "Russian",
-                        City = "Moscow"
+                        Country = TestData.Country_Russia,
+                        City = TestData.City_Moscow
                     }
                 },
                 new Apartment() {
                     Id = Guid.NewGuid() ,
                     Location = new Location(){
                         Id = Guid.NewGuid(),
-                        Country = "Russian",
-                        City = "Saint-Peterburg"
+                        Country = TestData.Country_Russia,
+                        City = TestData.City_Peterburg
                     }
                 },
                 new Apartment() {
                     Id = Guid.NewGuid(),
                     Location = new Location(){
                         Id = Guid.NewGuid(),
-                        Country = "Russian",
-                        City = "Kazan"
+                        Country = TestData.Country_Russia,
+                        City = TestData.City_Kazan
                     }
                 }
             };
@@ -184,8 +181,8 @@ namespace Booking.Application.UnitTests.Services
                 Location = new Location()
                 {
                     Id = Guid.NewGuid(),
-                    Country = "Russian",
-                    City = "Ryazan"
+                    Country = TestData.Country_Russia,
+                    City = TestData.City_Ryazan
                 }
             };
 

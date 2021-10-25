@@ -12,41 +12,45 @@ namespace Booking.DataAccess.Repositories
 {
     public class Repository<TEntity> : IRepository<TEntity> where TEntity : BaseEntity
     {
-        private BookingContext Context;
+        private BookingContext _context;
         public Repository(BookingContext context)
         {
-            Context = context;
+            _context = context;
         }
 
         public async Task AddAsync(TEntity entity)
         {
-            await Context.Set<TEntity>().AddAsync(entity);
-            await Context.SaveChangesAsync();
+            await _context.Set<TEntity>().AddAsync(entity);
+            await _context.SaveChangesAsync();
         }
 
         public Task DeleteAsync(TEntity entity)
         {
-            Context.Set<TEntity>().Remove(entity);
-            return Context.SaveChangesAsync();
+            _context.Set<TEntity>().Remove(entity);
+            return _context.SaveChangesAsync();
         }
         public Task UpdateAsync(TEntity entity)
         {
-            Context.Entry(entity).State = EntityState.Modified;
-            return Context.SaveChangesAsync();
+            _context.Entry(entity).State = EntityState.Modified;
+            return _context.SaveChangesAsync();
         }
 
-        public async Task<IEnumerable<TEntity>> GetAllAsync()=>
-            await Context.Set<TEntity>().ToListAsync();
-        
-        public async Task<TEntity> GetByIdAsync(int id)=>
-            await Context.Set<TEntity>().FindAsync(id);
-        //TODO: params
+        public async Task<IEnumerable<TEntity>> GetAllAsync() =>
+            await _context.Set<TEntity>().ToListAsync();
+
+        public async Task<TEntity> GetByIdAsync<T>(T id) {
+            if (id is  Guid || id is int || id is string)
+            {
+                return await _context.Set<TEntity>().FindAsync(id);
+            }
+            throw new ArgumentException();
+        }
         public IQueryable<TEntity> GetWhere(Expression<Func<TEntity, bool>> predicate)=>
-             Context.Set<TEntity>().Where(predicate).AsQueryable();
+             _context.Set<TEntity>().Where(predicate).AsQueryable();
 
         public IQueryable<TEntity> GetAll(params Expression<Func<TEntity, object>>[] includes)
         {
-            var query = Context.Set<TEntity>().AsQueryable();
+            var query = _context.Set<TEntity>().AsQueryable();
             return includes.Aggregate(query, (q, w) => q.Include(w));
         }
     }

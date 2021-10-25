@@ -6,7 +6,6 @@ using Booking.DataAccess;
 using Booking.DataAccess.Persistence;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Moq;
@@ -25,7 +24,6 @@ namespace Booking.Application.UnitTests.Services
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IMapper _mapper;
         private readonly IConfiguration _configuration;
-        private readonly BookingContext _context;
 
 
         public AccountServiceTests()
@@ -43,7 +41,7 @@ namespace Booking.Application.UnitTests.Services
                 .AddInMemoryCollection(configurationRoot)
                 .Build();
             var user = Substitute.For<IUserStore<ApplicationUser>>();
-            _userManager = Substitute.For<UserManager<ApplicationUser>>(user, null, null, null, null, null, null, null,null);
+            _userManager = Substitute.For<UserManager<ApplicationUser>>(user, null, null, null, null, null, null, null, null);
             var contextAccessor = Substitute.For<IHttpContextAccessor>();
             var userPrincipalFactory = Substitute.For<IUserClaimsPrincipalFactory<ApplicationUser>>();
             _signInManager = Substitute.For<SignInManager<ApplicationUser>>(_userManager, contextAccessor,
@@ -52,18 +50,17 @@ namespace Booking.Application.UnitTests.Services
 
             var context = new Mock<BookingContext>();
             context.Setup(m => m.Users).Returns(mockSet.Object);
-
             _accountService = new AccountService(_userManager, _signInManager, _mapper, context.Object, _configuration);
         }
-        [Fact]
         public async Task CreateAsync_AddUserToDb()
         {
             //Arrange
-            var createUserModel = new UserModel() { 
-                UserName="John",
-                Email="test@test.com",
-                PhoneNumber="+224346345232",
-                Password="TryCreate132"
+            var createUserModel = new UserModel()
+            {
+                UserName = "John",
+                Email = "test@test.com",
+                PhoneNumber = "+224346345232",
+                Password = "TryCreate132"
             };
             //Act
             var result = await _accountService.CreateAsync(createUserModel);
@@ -72,14 +69,13 @@ namespace Booking.Application.UnitTests.Services
 
             var expectedResult = JsonSerializer.Serialize(
                 new
-            {
-                Success = true,
-                UserName = createUserModel.UserName
-            });
+                {
+                    Success = true,
+                    UserName = createUserModel.UserName
+                });
             Assert.Equal(expectedResult, result);
 
         }
-        [Fact]
         public async Task LoginAsync_ReturnTokenAndUserName()
         {
             //Arrange
@@ -98,7 +94,7 @@ namespace Booking.Application.UnitTests.Services
             NameToken expectedResult = JsonSerializer.Deserialize<NameToken>(result);
 
             Assert.NotNull(expectedResult.Token);
-        } 
+        }
     }
 
     public class NameToken

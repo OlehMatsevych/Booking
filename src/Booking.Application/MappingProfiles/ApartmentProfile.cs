@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Booking.Application.Models.Apartment;
+using Booking.Core.Entities;
 
 namespace Booking.Application.MappingProfiles
 {
@@ -7,8 +8,8 @@ namespace Booking.Application.MappingProfiles
     {
         public ApartmentProfile()
         {
-            CreateMap<Core.Entities.Apartment, ApartmentModel>();
-            CreateMap<ApartmentModel, Core.Entities.Apartment>();
+            CreateMap<Apartment, ApartmentModel>();
+            CreateMap<ApartmentModel, Apartment>();
         }
     }
 }

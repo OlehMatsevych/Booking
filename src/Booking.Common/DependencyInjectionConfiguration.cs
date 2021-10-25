@@ -42,9 +42,10 @@ namespace Booking.Common
 
         public static void AddIdentity(this IServiceCollection services)
         {
-            services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
+            services.AddDefaultIdentity<ApplicationUser>()
+                .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<BookingContext>();
-
+            
             services.Configure<IdentityOptions>(options =>
             {
                 options.Password.RequireDigit = true;

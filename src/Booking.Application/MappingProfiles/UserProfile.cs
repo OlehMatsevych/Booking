@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Booking.Application.Models;
+using Booking.Core.Entities;
 using Booking.DataAccess;
 
 namespace Booking.Application.MappingProfiles
@@ -8,8 +9,8 @@ namespace Booking.Application.MappingProfiles
     {
         public UserProfile()
         {
-            CreateMap<ApplicationUser, UserModel>();
             CreateMap<UserModel, ApplicationUser>();
+            CreateMap<UserModel, Guest>();
         }
     }
 }

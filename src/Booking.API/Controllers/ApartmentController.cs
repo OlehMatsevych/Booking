@@ -1,4 +1,5 @@
-﻿using Booking.Application.Models.Apartment;
+﻿using Booking.Application.Helpers;
+using Booking.Application.Models.Apartment;
 using Booking.Application.Services.Apartment;
 using Booking.Core.Entities;
 using Microsoft.AspNetCore.Authorization;
@@ -10,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Booking.API.Controllers
 {
-    [Route("api/appartments")]
+    [Route("api/Apartments")]
     [ApiController]
     [Authorize]
     public class ApartmentController : ControllerBase
@@ -24,7 +25,7 @@ namespace Booking.API.Controllers
         }
 
         [HttpGet]
-        [Route("appartmentsList")]
+        [Route("ApartmentsList")]
         public IActionResult GetApartments()
         {
             var apartments =  _apartmentService.GetApartments();
@@ -55,8 +56,8 @@ namespace Booking.API.Controllers
         [HttpDelete("{id}")]
         public IActionResult DeleteAppartmentById(Guid id)
         {
-            _apartmentService.DeleteApartmentsAsync(id);
-            return Ok();
+            var status = _apartmentService.DeleteApartmentsAsync(id);
+            return Ok(status);
         }
     }
 }

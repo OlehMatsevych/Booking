@@ -50,7 +50,6 @@ namespace Booking.API.Middleware
                     response.StatusCode = (int)HttpStatusCode.NotFound;
                     break;
             }
-            //TODO: OPERATION STATUS
             var result = JsonSerializer.Serialize(new { message = error.Message });
             await response.WriteAsync(result);
         }

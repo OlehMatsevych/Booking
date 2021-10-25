@@ -7,10 +7,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Coderful.EntityFramework.Testing" Version="1.5.1" />
+    <PackageReference Include="Google.Apis.Core" Version="1.55.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="3.1.20" />
+    <PackageReference Include="Microsoft.AspNetCore.TestHost" Version="3.1.20" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.9.4" />
-    <PackageReference Include="Moq" Version="4.16.1" />
-    <PackageReference Include="NSubstitute" Version="4.2.2" />
+    <PackageReference Include="System.Net.Http.Json" Version="3.2.0" />
     <PackageReference Include="xunit" Version="2.4.1" />
     <PackageReference Include="xunit.runner.visualstudio" Version="2.4.3">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -23,7 +24,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\Booking.Application\Booking.Application.csproj" />
+    <ProjectReference Include="..\src\Booking.API\Booking.API.csproj" />
+    <ProjectReference Include="..\src\Booking.DataAccess\Booking.DataAccess.csproj" />
   </ItemGroup>
 
 </Project>
