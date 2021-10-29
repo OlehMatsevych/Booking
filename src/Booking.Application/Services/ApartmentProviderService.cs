@@ -29,19 +29,26 @@ namespace Booking.Application.Services
             {
                 throw new EmptyObjectException(ApartmentRequestErrorMessages.EmptyRequestModel);
             }
-            await _repository.AddAsync(entity);
+            try
+            {
+                await _repository.AddAsync(entity);
+            }
+            catch (Exception ex)
+            {
+                return new OperationStatus() { IsSuccesed = false, Message = "Error" + ex.Message };
+            }
 
             return new OperationStatus() { IsSuccesed = true, Message = "OK 200" };
         }
 
-        public IEnumerable<ApartmentProviderModel> GetAllProviders()
+        public IEnumerable<ApartmentRequestModel> GetAllRequests()
         {
             var entities = _repository.GetAll();
             if (entities == null)
             {
                 throw new EmptyObjectException(ApartmentRequestErrorMessages.EmptyRequestModel);
             }
-            return _mapper.Map<IEnumerable<ApartmentProviderModel>>(entities);
+            return _mapper.Map<IEnumerable<ApartmentRequestModel>>(entities);
         }
     }
 }

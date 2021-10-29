@@ -68,32 +68,31 @@ namespace Booking.API.IntegrationTests.Controllers
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         }
         [Fact]
-        public async Task UpdateAppartmentTestAsync_ShouldReturnOk()
+        public async Task UpdateAppartmentTestAsync_ShouldReturnNotAllowed()
         {
             //Arrange
             await AuthenticateAsync();
+            var testId = Guid.NewGuid();
             ApartmentModel model = new ApartmentModel()
             {
-                Id = Guid.NewGuid(),
+                Id = testId,
                 Location = new Location()
                 {
                     City = "Russia",
                     Country = "Moscow"
                 }
             };
-            var id = JsonConvert.SerializeObject(Guid.NewGuid());
-            var json = id + JsonConvert.SerializeObject(model);
+            var json = JsonConvert.SerializeObject(model);
 
             var data = new StringContent(json, Encoding.UTF8, "application/json");
             //Act
-            var response = await _httpClient.PutAsync("/api/Apartments/UpdateAppartment/", data);
+            var response = await _httpClient.PutAsync("http://localhost:57094/api/Apartments/", data);
 
             //Assert
-            response.EnsureSuccessStatusCode();
-            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            Assert.Equal(HttpStatusCode.MethodNotAllowed, response.StatusCode);
         }
         [Fact]
-        public async Task DeleteAppartmentById_ShouldReturnOk()
+        public async Task DeleteAppartmentById_ShouldReturnNotAllowed()
         {
             //Arrange
             await AuthenticateAsync();
@@ -102,20 +101,12 @@ namespace Booking.API.IntegrationTests.Controllers
             var Id = TestId.ToString();
             var json = JsonConvert.SerializeObject(Id);
             var data = new StringContent(json, Encoding.UTF8, "application/json");
+
             //Act
-
-            var request = new HttpRequestMessage()
-            {
-                RequestUri = new Uri("localhost:57094/api/Apartments/DeleteAppartmentById/"),
-                Method=HttpMethod.Delete,
-                Content = data
-
-            };
-            var response = await _httpClient.SendAsync(request);
+            var response = await _httpClient.DeleteAsync("http://localhost:57094/api/Apartments/");
 
             //Assert
-            response.EnsureSuccessStatusCode();
-            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            Assert.Equal(HttpStatusCode.MethodNotAllowed, response.StatusCode);
         }
     }
 }

@@ -13,48 +13,78 @@ namespace Booking.API.Controllers
     [Authorize]
     public class ApartmentController : ControllerBase
     {
-        //Service
         private readonly IApartmentService _apartmentService;
 
         public ApartmentController(IApartmentService apartmentService)
         {
             _apartmentService = apartmentService;
         }
-        //TODO: smoke test with Postman
         [HttpGet]
         [Route("ApartmentsList")]
         public IActionResult GetApartments()
         {
-            var apartments =  _apartmentService.GetApartments();
-            return Ok(apartments);
+            try 
+            { 
+                var apartments =  _apartmentService.GetApartments();
+                return Ok(apartments);
+            }
+            catch (Exception)
+            {
+                return BadRequest();
+            }
         }
 
         [HttpPost("{Location}")]
         public IActionResult GetApartmentsByLocation(Location location)
         {
-            var apartments = _apartmentService.GetApartmentsByLocationAsync(location);
-            return Ok(apartments);
+            try
+            { 
+                var apartments = _apartmentService.GetApartmentsByLocationAsync(location);
+                return Ok(apartments);
+            }
+            catch (Exception)
+            {
+                return BadRequest();
+            }
         }
 
         [HttpPost]
         public async Task<IActionResult> AddAppartment(ApartmentModel model)
         {
-            var apartment = await _apartmentService.CreateApartmentsAsync(model);
-            return Ok(apartment);
+            try
+            { 
+                var apartment = await _apartmentService.CreateApartmentsAsync(model);
+                return Ok(apartment);
+            }
+            catch (Exception)
+            {
+                return BadRequest();
+            }
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateAppartment(Guid id, ApartmentModel model)
+        public IActionResult UpdateAppartment(Guid id, ApartmentModel model)
         {
-            var updatedApartment = await _apartmentService.UpdateApartmentsAsync(id,model);
-            return Ok(updatedApartment);
+            try
+            {
+                var updatedApartment = _apartmentService.UpdateApartmentsAsync(id, model);
+                return Ok(updatedApartment);
+            }
+            catch (Exception) { return BadRequest(); }
         }
 
         [HttpDelete("{id}")]
         public IActionResult DeleteAppartmentById(Guid id)
         {
-            var status = _apartmentService.DeleteApartmentsAsync(id);
-            return Ok(status);
+            try
+            {
+                var status = _apartmentService.DeleteApartmentsAsync(id);
+                return Ok(status);
+            }
+            catch (Exception)
+            {
+                return BadRequest(); 
+            }
         }
     }
 }

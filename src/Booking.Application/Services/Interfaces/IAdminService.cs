@@ -9,7 +9,7 @@ namespace Booking.Application.Services.Interfaces
 {
     public interface IAdminService
     {
-        OperationStatus ApproveRequest(ApartmentRequestModel request);
+        Task<OperationStatus> ApproveRequest(ApartmentRequestModel request);
         Task<OperationStatus> BlockUser(UserModel user);
 
     }

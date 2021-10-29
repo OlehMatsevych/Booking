@@ -11,6 +11,7 @@ namespace Booking.Application.MappingProfiles
         {
             CreateMap<UserModel, ApplicationUser>();
             CreateMap<UserModel, Guest>();
+            CreateMap<Guest, UserModel>();
         }
     }
 }

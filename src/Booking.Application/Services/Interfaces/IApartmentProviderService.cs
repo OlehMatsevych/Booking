@@ -8,6 +8,6 @@ namespace Booking.Application.Services.Interfaces
     public interface IApartmentProviderService
     {
         public Task<OperationStatus> CreateRequest(ApartmentRequestModel request);
-        public IEnumerable<ApartmentProviderModel> GetAllProviders();
+        public IEnumerable<ApartmentRequestModel> GetAllRequests();
     }
 }

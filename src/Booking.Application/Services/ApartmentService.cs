@@ -42,7 +42,6 @@ namespace Booking.Application.Services.Apartment
             }
             await _repository.DeleteAsync(entity);
 
-            //TODO: Integration Tests
             return new OperationStatus() {IsSuccesed=true, Message="OK 200" };
         }
 
@@ -66,11 +65,17 @@ namespace Booking.Application.Services.Apartment
             return _mapper.Map<IEnumerable<ApartmentModel>>(apartments);
         }
 
-        public async Task<ApartmentModel> UpdateApartmentsAsync(Guid id, ApartmentModel apartment)
+        public ApartmentModel UpdateApartmentsAsync(Guid id, ApartmentModel apartment)
         {
             var entity = _repository.GetWhere(x => x.Id == id).FirstOrDefault();
-            entity.Location = apartment.Location;
+            ChangeLocation(entity, apartment.Location);
             return _mapper.Map<ApartmentModel>(entity);
+        }
+
+        private ApartmentEntity ChangeLocation(ApartmentEntity entity, Location Location)
+        {
+            entity.Location = Location;
+            return  entity;
         }
     }
 }

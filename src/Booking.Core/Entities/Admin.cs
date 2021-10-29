@@ -1,4 +1,5 @@
-﻿using Booking.Core.Common;
+﻿using Booking.Core.Attributes;
+using Booking.Core.Common;
 using System;
 using System.Collections.Generic;
 
@@ -7,6 +8,8 @@ namespace Booking.Core.Entities
     public class Admin: BaseEntity, IChangeEntity
     {
         public string Name { get; set; }
+
+        [EmailValidation]
         public string Email { get; set; }
         public string Password { get; set; }
 

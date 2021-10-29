@@ -10,6 +10,8 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 
+using ApartmentEntity = Booking.Core.Entities.Apartment;
+
 namespace Booking.Application.Services
 {
     public class UserService : IUserService

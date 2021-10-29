@@ -8,10 +8,5 @@ namespace Booking.DataAccess.Repositories
     {
         public ApartmentRepository(BookingContext context) : base(context)
         { }
-
-        public void Dispose()
-        {
-            
-        }
     }
 }

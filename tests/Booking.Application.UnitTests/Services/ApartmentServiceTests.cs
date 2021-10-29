@@ -11,7 +11,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Text.Json;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -38,10 +37,10 @@ namespace Booking.Application.UnitTests.Services
             var apartmentModel = new ApartmentModel()
             {
                 Id = Guid.NewGuid(),
-                Location = new Core.Entities.Location() {
+                Location = new Location() {
                     Id = Guid.NewGuid(),
-                    Country = TestData.Country_USA,
-                    City = TestData.City_New_York
+                    Country = Countries.USA.ToString(),
+                    City = Cities.New_York.ToString()
                 }
             };
             
@@ -72,7 +71,7 @@ namespace Booking.Application.UnitTests.Services
 
             //Assert
             var expectedResult = new OperationStatus() { IsSuccesed = true, Message = "OK 200" };
-            Assert.Equal(expectedResult, result);
+            Assert.Equal(expectedResult.IsSuccesed, result.IsSuccesed);
         }
         [Fact]
         public async Task GetApartments_ReturnListOfApartments()
@@ -105,24 +104,24 @@ namespace Booking.Application.UnitTests.Services
                     Id = Guid.NewGuid() ,
                     Location = new Location(){
                         Id = testId,
-                        Country = TestData.Country_Russia,
-                        City = TestData.City_Moscow
+                        Country = Countries.Russian.ToString() ,
+                        City = Cities.Moscow.ToString()
                     }
                 },
                 new Apartment() { 
                     Id = Guid.NewGuid() ,
                     Location = new Location(){
                         Id = Guid.NewGuid(),
-                        Country = TestData.Country_Russia,
-                        City = TestData.City_Peterburg
+                        Country = Countries.Russian.ToString(),
+                        City = Cities.Saint_Peterburg.ToString()
                     }
                 },
                 new Apartment() {
                     Id = Guid.NewGuid(),
                     Location = new Location(){
                         Id = Guid.NewGuid(),
-                        Country = TestData.Country_Russia,
-                        City = TestData.City_Kazan
+                        Country = Countries.Russian.ToString(),
+                        City = Cities.Kazan.ToString()
                     }
                 }
             };
@@ -130,8 +129,8 @@ namespace Booking.Application.UnitTests.Services
             Location location = new Location()
             {
                 Id = testId,
-                Country = TestData.Country_Russia,
-                City = TestData.City_Moscow
+                Country = Countries.Russian.ToString(),
+                City = Cities.Moscow.ToString()
             };
 
             var query = apartments.Where(x => x.Location.Id == location.Id).AsQueryable();
@@ -154,24 +153,24 @@ namespace Booking.Application.UnitTests.Services
                     Id = testId ,
                     Location = new Location(){
                         Id = Guid.NewGuid(),
-                        Country = TestData.Country_Russia,
-                        City = TestData.City_Moscow
+                        Country = Countries.Russian.ToString(),
+                        City = Cities.Moscow.ToString()
                     }
                 },
                 new Apartment() {
                     Id = Guid.NewGuid() ,
                     Location = new Location(){
                         Id = Guid.NewGuid(),
-                        Country = TestData.Country_Russia,
-                        City = TestData.City_Peterburg
+                        Country = Countries.Russian.ToString(),
+                        City = Cities.Saint_Peterburg.ToString()
                     }
                 },
                 new Apartment() {
                     Id = Guid.NewGuid(),
                     Location = new Location(){
                         Id = Guid.NewGuid(),
-                        Country = TestData.Country_Russia,
-                        City = TestData.City_Kazan
+                        Country = Countries.Russian.ToString(),
+                        City = Cities.Kazan.ToString()
                     }
                 }
             };
@@ -181,15 +180,15 @@ namespace Booking.Application.UnitTests.Services
                 Location = new Location()
                 {
                     Id = Guid.NewGuid(),
-                    Country = TestData.Country_Russia,
-                    City = TestData.City_Ryazan
+                    Country = Countries.Russian.ToString(),
+                    City = Cities.Ryazan.ToString()
                 }
             };
 
             var query = apartments.Where(x => x.Id == x.Id).AsQueryable();
             _repository.GetWhere(Arg.Any<Expression<Func<Apartment, bool>>>()).Returns(query);
             //Act
-            var result = await _service.UpdateApartmentsAsync(testId, updateApartment);
+            var result =  _service.UpdateApartmentsAsync(testId, updateApartment);
             //Assert
             Assert.Equal(testId,result.Id);
         }

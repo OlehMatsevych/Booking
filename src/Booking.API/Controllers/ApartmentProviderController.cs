@@ -1,16 +1,13 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Booking.Application.Models;
 using Booking.Application.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Booking.Application.Models;
 
 namespace Booking.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class ApartmentProviderController : ControllerBase
     {
         private readonly IApartmentProviderService _providerService;
@@ -25,11 +22,11 @@ namespace Booking.API.Controllers
             _providerService.CreateRequest(request);
             return Ok();
         }
-        [HttpPost]
+        [HttpGet]
         [Route("GetAllProviders")]
-        public IActionResult GetAllProviders()
+        public IActionResult GetAllRequests()
         {
-            var providers = _providerService.GetAllProviders();
+            var providers = _providerService.GetAllRequests();
             return Ok(providers);
         }
     }

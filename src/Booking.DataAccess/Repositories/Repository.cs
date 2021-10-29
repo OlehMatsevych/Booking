@@ -18,10 +18,10 @@ namespace Booking.DataAccess.Repositories
             _context = context;
         }
 
-        public async Task AddAsync(TEntity entity)
+        public Task AddAsync(TEntity entity)
         {
-            await _context.Set<TEntity>().AddAsync(entity);
-            await _context.SaveChangesAsync();
+             _context.Set<TEntity>().AddAsync(entity);
+            return _context.SaveChangesAsync();
         }
 
         public Task DeleteAsync(TEntity entity)

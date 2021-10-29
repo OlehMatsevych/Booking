@@ -5,6 +5,7 @@ using Booking.Application.Helpers;
 using Booking.Application.Models;
 using Booking.Application.Services.Interfaces;
 using Booking.DataAccess.Repositories;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
@@ -24,14 +25,22 @@ namespace Booking.Application.Services
             _mapper = mapper;
             _userService = userService;
         }
-        public OperationStatus ApproveRequest(ApartmentRequestModel request)
+        public async Task<OperationStatus> ApproveRequest(ApartmentRequestModel request)
         {
             if (request == null)
             {
                 throw new EmptyObjectException(AdminErrorMessages.EmptyRequestModel);
             }
-            var requestEntity = _requestsRepository.GetWhere(x => x.Id == request.Id).FirstOrDefault();
-            requestEntity.IsApproved = true;
+            var requestEntity = await _requestsRepository.GetWhere(x => x.Id == request.Id).FirstOrDefaultAsync();
+            try
+            {
+                requestEntity.IsApproved = true;
+                await _requestsRepository.UpdateAsync(requestEntity);
+            }
+            catch (Exception ex)
+            {
+                return new OperationStatus() { IsSuccesed = false, Message = "Error: "+ex.Message };
+            }
             return new OperationStatus() { IsSuccesed = true, Message = "OK 200" };
         }
 

@@ -35,8 +35,6 @@ namespace Booking.Application.Services
             _signInManager = signInManager;
             _configuration = configuration;
         }
-        //TODO: private method for bl
-        //TODO: extension method object
         public async Task<string> LoginAsync(UserModel loginUserModel)
         {
             try

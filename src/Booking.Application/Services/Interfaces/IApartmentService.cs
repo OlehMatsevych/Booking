@@ -12,7 +12,7 @@ namespace Booking.Application.Services.Apartment
         IEnumerable<ApartmentModel> GetApartments();
         IEnumerable<ApartmentModel> GetApartmentsByLocationAsync(Location location);
         Task<ApartmentModel> CreateApartmentsAsync(ApartmentModel apartment);
-        Task<ApartmentModel> UpdateApartmentsAsync(Guid id, ApartmentModel apartment);
+        ApartmentModel UpdateApartmentsAsync(Guid id, ApartmentModel apartment);
         Task<OperationStatus> DeleteApartmentsAsync(Guid id);
     }
 }
