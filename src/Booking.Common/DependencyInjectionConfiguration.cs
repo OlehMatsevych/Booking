@@ -26,6 +26,7 @@ namespace Booking.Common
             services.AddScoped<IApartmentProviderService, ApartmentProviderService>();
             services.AddScoped<IAdminService, AdminService>();
             services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IPaymentService, PaymentService>();
         }
         public static void AddRepositories(this IServiceCollection services)
         {

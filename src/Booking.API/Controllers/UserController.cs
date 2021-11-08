@@ -29,5 +29,12 @@ namespace Booking.API.Controllers
             _userService.CancelReservation(model.Id);
             return Ok();
         }
+        [HttpDelete]
+        [Route("SubscribeForNews")]
+        public IActionResult SubscribeForNews(ReservationModel model)
+        {
+            //_userService.CancelReservation(model.Id);
+            return Ok();
+        }
     }
 }
