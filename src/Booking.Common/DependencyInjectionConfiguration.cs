@@ -27,6 +27,7 @@ namespace Booking.Common
             services.AddScoped<IAdminService, AdminService>();
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IPaymentService, PaymentService>();
+            services.AddScoped<IRoomService, RoomService>();
         }
         public static void AddRepositories(this IServiceCollection services)
         {
@@ -36,6 +37,7 @@ namespace Booking.Common
             services.AddScoped<IAdminRepository, AdminRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IReservationRepository, ReservationRepository>();
+            services.AddScoped<IRoomRepository, RoomRepository>();
         }
         public static void AddDatabase(this IServiceCollection services, IConfiguration configuration)
         {

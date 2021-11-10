@@ -12,5 +12,6 @@ namespace Booking.Application.Services.Interfaces
         Task<OperationStatus> AddReservation(ReservationModel reservation);
         Task<OperationStatus> CancelReservation(Guid reservationId);
         Task<OperationStatus> DeleteUserAsync(Guid id);
+        Task<List<ReservationModel>> GetHistory();
     }
 }

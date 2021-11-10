@@ -6,7 +6,9 @@ using Booking.Application.Models;
 using Booking.Application.Services.Interfaces;
 using Booking.Core.Entities;
 using Booking.DataAccess.Repositories;
+using Microsoft.Extensions.Caching.Memory;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -18,13 +20,15 @@ namespace Booking.Application.Services
     {
         private readonly IUserRepository _repository;
         private readonly IReservationRepository _reservationRepository;
+        private readonly IMemoryCache _cache;
         private readonly IMapper _mapper;
 
-        public UserService(IUserRepository repository, IMapper mapper, IReservationRepository reservationRepository)
+        public UserService(IUserRepository repository, IMapper mapper, IReservationRepository reservationRepository, IMemoryCache cache)
         {
             _repository = repository;
             _reservationRepository = reservationRepository;
             _mapper = mapper;
+            _cache = cache;
         }
         public async Task<OperationStatus> AddReservation(ReservationModel reservation)
         {
@@ -33,6 +37,10 @@ namespace Booking.Application.Services
             {
                 throw new EmptyObjectException(ReservationErrorMessages.ReservationNotFoundException);
             }
+            _cache.Set(entity.Id, entity, new MemoryCacheEntryOptions
+            {
+                AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(60)
+            });
             await _reservationRepository.AddAsync(entity);
 
             return new OperationStatus() { IsSuccesed = true, Message = "OK 200" };
@@ -60,6 +68,25 @@ namespace Booking.Application.Services
             await _repository.DeleteAsync(user);
 
             return new OperationStatus() { IsSuccesed = true, Message = "OK 200" };
+        }
+
+        public async Task<List<ReservationModel>> GetHistory()
+        {
+            var historyList = new List<ReservationModel>();
+            var keys = _cache.GetKeys();
+            foreach (var key in keys)
+            {
+                if (key != null)
+                {
+                    var temp = _cache.Get(key);
+                    if (temp is Reservation)
+                    {
+                        historyList.Add(_mapper.Map<ReservationModel>((Reservation)temp));
+                    }
+                }
+            }
+
+            return await Task.FromResult(historyList);
         }
     }
 }

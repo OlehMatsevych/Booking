@@ -2,6 +2,7 @@
 using Booking.Application.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
 
 namespace Booking.API.Controllers
 {
@@ -17,6 +18,7 @@ namespace Booking.API.Controllers
         }
         [HttpPost]
         [Route("AddReservation")]
+        [AllowAnonymous]
         public IActionResult AddReservation(ReservationModel model)
         {
             _userService.AddReservation(model);
@@ -29,12 +31,13 @@ namespace Booking.API.Controllers
             _userService.CancelReservation(model.Id);
             return Ok();
         }
-        [HttpDelete]
-        [Route("SubscribeForNews")]
-        public IActionResult SubscribeForNews(ReservationModel model)
+        [HttpGet]
+        [Route("History")]
+        [AllowAnonymous]
+        public async Task<IActionResult> ViewHistory()
         {
-            //_userService.CancelReservation(model.Id);
-            return Ok();
+            var history = await _userService.GetHistory();
+            return Ok(history);
         }
     }
 }

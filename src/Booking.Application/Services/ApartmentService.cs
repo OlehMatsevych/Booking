@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
 using Booking.Application.Constants;
 using Booking.Application.Helpers;
+using Booking.Application.Models;
+using Booking.Application.Services.Interfaces;
 using Booking.Core.Entities;
 using Booking.DataAccess.Repositories;
 using System;
@@ -16,11 +18,14 @@ namespace Booking.Application.Services.Apartment
     {
         private readonly IApartmentRepository _repository;
         private readonly IMapper _mapper;
+        private readonly IRoomService _roomService;
 
-        public ApartmentService(IApartmentRepository repository, IMapper mapper)
+
+        public ApartmentService(IApartmentRepository repository, IMapper mapper, IRoomService roomService)
         {
             _repository = repository;
             _mapper = mapper;
+            _roomService = roomService;
         }
         public async Task<ApartmentModel> CreateApartmentsAsync(ApartmentModel apartment)
         {
@@ -63,6 +68,25 @@ namespace Booking.Application.Services.Apartment
                 throw new ArgumentException(ApartmentErrorMessages.EmptyList);
             }
             return _mapper.Map<IEnumerable<ApartmentModel>>(apartments);
+        }
+
+        public async Task<IEnumerable<RoomModel>> GetFreeRoomByLocationAsync(Location location)
+        {
+            var roomsTasks = new List<Task<IEnumerable<RoomModel>>>();
+            var apartmentsByLocationId = GetApartmentsByLocationAsync(location);
+
+            if (apartmentsByLocationId == null)
+            {
+                throw new Exception(ApartmentErrorMessages.EmptyList);
+            }
+
+            foreach (var item in apartmentsByLocationId)
+            {
+                roomsTasks.Add(_roomService.GetFreeRoomsByApartmentId(item.Id));
+            }
+            var finishedTask = await Task.WhenAny(roomsTasks);
+
+            return await finishedTask;
         }
 
         public ApartmentModel UpdateApartmentsAsync(Guid id, ApartmentModel apartment)

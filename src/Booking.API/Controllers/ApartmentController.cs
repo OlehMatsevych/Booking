@@ -86,5 +86,20 @@ namespace Booking.API.Controllers
                 return BadRequest(); 
             }
         }
+        [HttpPost]
+        [Route("FreeRoomsByLocation")]
+        [AllowAnonymous]
+        public IActionResult GetFreeRoomsByLocation(Location location)
+        {
+            try
+            {
+                var apartments = _apartmentService.GetFreeRoomByLocationAsync(location);
+                return Ok(apartments);
+            }
+            catch (Exception)
+            {
+                return BadRequest();
+            }
+        }
     }
 }
