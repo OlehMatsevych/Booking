@@ -30,7 +30,7 @@ namespace Booking.Application.UnitTests.Services
             _repository = new Mock<IUserRepository>();
             _reservationRepository = new Mock<IReservationRepository>();
 
-            _service = new UserService(_repository.Object,_mapper,_reservationRepository.Object);
+            _service = new UserService(_repository.Object,_mapper,_reservationRepository.Object, null);
         }
         [Fact]
         public async Task AddReservationTest_ReturnSuccess()

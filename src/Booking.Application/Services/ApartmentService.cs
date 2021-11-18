@@ -70,6 +70,26 @@ namespace Booking.Application.Services.Apartment
             return _mapper.Map<IEnumerable<ApartmentModel>>(apartments);
         }
 
+        public RoomsGuestsModel GetFreeRoomAndGuestsByLocation(string country)
+        {
+            var roomsGuests = _roomService.GetFreeRoomsAndGuestsByCountry(country);
+            if (roomsGuests == null)
+            {
+                throw new Exception(ApartmentErrorMessages.EmptyList);
+            }
+            return roomsGuests;
+        }
+
+        public IEnumerable<RoomModel> GetFreeRoomByCityAsync(string city)
+        {
+            var rooms = _roomService.GetFreeRoomsByCity(city);
+            if (rooms == null)
+            {
+                throw new Exception(ApartmentErrorMessages.EmptyList);
+            }
+            return rooms;
+        }
+
         public async Task<IEnumerable<RoomModel>> GetFreeRoomByLocationAsync(Location location)
         {
             var roomsTasks = new List<Task<IEnumerable<RoomModel>>>();

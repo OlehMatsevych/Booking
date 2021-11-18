@@ -4,14 +4,16 @@ using Booking.DataAccess.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Booking.DataAccess.Migrations
 {
     [DbContext(typeof(BookingContext))]
-    partial class BookingContextModelSnapshot : ModelSnapshot
+    [Migration("20211115144935_Updated-Entities")]
+    partial class UpdatedEntities
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -157,7 +159,7 @@ namespace Booking.DataAccess.Migrations
                     b.Property<Guid?>("AdminId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("ApartmentId")
+                    b.Property<Guid?>("ApartmentProviderId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("CreatedOn")
@@ -511,7 +513,7 @@ namespace Booking.DataAccess.Migrations
                         .WithMany("Apartments")
                         .HasForeignKey("AdminId");
 
-                    b.HasOne("Booking.Core.Entities.Guest", "Guest")
+                    b.HasOne("Booking.Core.Entities.Guest", null)
                         .WithMany("Apartments")
                         .HasForeignKey("GuestId");
 

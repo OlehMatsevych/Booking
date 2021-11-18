@@ -329,7 +329,7 @@ namespace Booking.DataAccess.Migrations
                     CreatedOn = table.Column<DateTime>(nullable: false),
                     UpdatedOn = table.Column<DateTime>(nullable: false),
                     AdminId = table.Column<Guid>(nullable: true),
-                    ApartmentProviderId = table.Column<Guid>(nullable: true)
+                    ApartmentId = table.Column<Guid>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -342,7 +342,7 @@ namespace Booking.DataAccess.Migrations
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Guests_ApartmentProviders_ApartmentProviderId",
-                        column: x => x.ApartmentProviderId,
+                        column: x => x.ApartmentId,
                         principalTable: "ApartmentProviders",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);

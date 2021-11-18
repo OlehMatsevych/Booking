@@ -27,7 +27,7 @@ namespace Booking.Application.UnitTests.Services
                 config.AddMaps(typeof(ApartmentProfile));
             }).CreateMapper();
             _repository = Substitute.For<IApartmentRepository>();
-            _service = new ApartmentService(_repository,_mapper);
+            _service = new ApartmentService(_repository,_mapper, null);
         }
 
         [Fact]

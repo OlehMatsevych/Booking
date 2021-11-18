@@ -9,5 +9,7 @@ namespace Booking.Application.Services.Interfaces
     {
         Task<IEnumerable<RoomModel>> GetRooms();
         Task<IEnumerable<RoomModel>> GetFreeRoomsByApartmentId(Guid apartmentId);
+        IEnumerable<RoomModel> GetFreeRoomsByCity(string city);
+        RoomsGuestsModel GetFreeRoomsAndGuestsByCountry(string country);
     }
 }

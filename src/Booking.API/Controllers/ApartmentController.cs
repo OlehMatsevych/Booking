@@ -101,5 +101,36 @@ namespace Booking.API.Controllers
                 return BadRequest();
             }
         }
+        [HttpPost]
+        [Route("FreeRoomsByCity")]
+        [AllowAnonymous]
+        public IActionResult GetFreeRoomsByCity(string city)
+        {
+            try
+            {
+                var rooms = _apartmentService.GetFreeRoomByCityAsync(city);
+                return Ok(rooms);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        [HttpPost]
+        [Route("FreeRoomsAndGuestsByCountry")]
+        [AllowAnonymous]
+        public IActionResult GetFreeRoomsAndGuestsByCountry(string country)
+        {
+            try
+            {
+                var roomsGuests = _apartmentService.GetFreeRoomAndGuestsByLocation(country);
+                return Ok(roomsGuests);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
     }
 }

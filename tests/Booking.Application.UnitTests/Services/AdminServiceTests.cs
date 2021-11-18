@@ -33,7 +33,7 @@ namespace Booking.Application.UnitTests.Services
             }).CreateMapper();
             var reservationRepository = new Mock<IReservationRepository>();
             _userRepository = new Mock<IUserRepository>();
-            _userService = new UserService(_userRepository.Object,_mapper, reservationRepository.Object);
+            _userService = new UserService(_userRepository.Object,_mapper, reservationRepository.Object, null);
             _repository = new Mock<IAdminRepository>();
             _requestsRepository = new Mock<IApartmentRequestRepository>();
             _adminService = new AdminService(_repository.Object, _mapper, _requestsRepository.Object, _userService);
