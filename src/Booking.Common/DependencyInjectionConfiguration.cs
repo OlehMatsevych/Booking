@@ -5,6 +5,8 @@ using Booking.Application.Services.Interfaces;
 using Booking.DataAccess;
 using Booking.DataAccess.Persistence;
 using Booking.DataAccess.Repositories;
+using Booking.Messaging.Receive.Options;
+using Booking.Messaging.Receive.Receiver;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -50,7 +52,17 @@ namespace Booking.Common
         {
             services.AddAutoMapper(typeof(ApartmentProfile).Assembly);
         }
+        public static void AddRabbitMq(this IServiceCollection services, IConfiguration configuration)
+        {
+            var serviceClientSettingsConfig = configuration.GetSection("RabbitMq");
+            services.Configure<RabbitMqConfiguration>(serviceClientSettingsConfig);
 
+            bool.TryParse(configuration["BaseServiceSettings:Userabbitmq"], out var useRabbitMq);
+            if (useRabbitMq)
+            {
+                services.AddSingleton<ICarReceiver, CarReceiver>();
+            }
+        }
         public static void AddIdentity(this IServiceCollection services)
         {
             services.AddDefaultIdentity<ApplicationUser>()
