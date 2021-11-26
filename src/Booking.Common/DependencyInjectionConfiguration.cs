@@ -30,6 +30,7 @@ namespace Booking.Common
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IPaymentService, PaymentService>();
             services.AddScoped<IRoomService, RoomService>();
+            services.AddScoped<ICarService, CarService>();
         }
         public static void AddRepositories(this IServiceCollection services)
         {

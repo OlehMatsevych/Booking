@@ -1,0 +1,26 @@
+﻿version: '2.1'
+
+services:
+  bookingapi:
+    image: bookingapi
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "9080:80"
+    depends_on:
+      - migrations
+      - db
+  db:
+    image: mrc.microsoft.com/mssql/server:2019-latest
+    environment:
+      SA_PASSWORD: "guest@gmail.com"
+      ACCEPT_EULA: "Y"
+    ports: 
+      - "14331:1433"
+    depends_on:
+      - migrations
+  migrations:
+    build:
+      context: .
+      dockerfile: Migrations.Dockerfile

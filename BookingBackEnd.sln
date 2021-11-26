@@ -21,7 +21,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Booking.Application.UnitTes
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Booking.API.IntegrationTests", "Booking.API.IntegrationTests\Booking.API.IntegrationTests.csproj", "{33CC7F88-CDED-488F-BB5E-8FC1509F8E6D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Booking.Messaging.Receive", "src\Booking.Messaging.Receive\Booking.Messaging.Receive.csproj", "{B5AE6CDD-FDBD-4E15-A1A3-13173439EB42}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Booking.Messaging.Receive", "src\Booking.Messaging.Receive\Booking.Messaging.Receive.csproj", "{B5AE6CDD-FDBD-4E15-A1A3-13173439EB42}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
